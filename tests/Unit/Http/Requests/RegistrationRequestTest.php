@@ -28,4 +28,12 @@ class RegistrationRequestTest extends TestCase
         ];
         $this->assertSame($expected, $actual);
     }
+
+    public function test_get_email(): void
+    {
+    }
+
+    public function test_get_password(): void
+    {
+    }
 }
