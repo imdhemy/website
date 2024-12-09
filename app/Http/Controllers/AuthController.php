@@ -11,7 +11,7 @@ class AuthController extends Controller
     {
         $user = User::create([
             'email' => $request->getEmail(),
-            'password' => $request->getPassword(),
+            'password' => bcrypt($request->getPassword()),
         ]);
 
         return response()->json($user, 201);
