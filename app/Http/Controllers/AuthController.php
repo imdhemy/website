@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RegistrationRequest;
 use App\Models\User;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
@@ -14,6 +15,6 @@ class AuthController extends Controller
             'password' => bcrypt($request->getPassword()),
         ]);
 
-        return response()->json($user, 201);
+        return response()->json($user, Response::HTTP_CREATED);
     }
 }
