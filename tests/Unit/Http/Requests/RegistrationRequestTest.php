@@ -32,7 +32,7 @@ class RegistrationRequestTest extends TestCase
 
         $expected = [
             'email' => ['required', 'email', 'unique:users'],
-            'password' => ['required'],
+            'password' => ['required', 'min:5'],
         ];
         $this->assertSame($expected, $actual);
     }
