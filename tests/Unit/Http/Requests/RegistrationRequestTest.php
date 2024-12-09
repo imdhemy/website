@@ -8,13 +8,6 @@ use PHPUnit\Framework\TestCase;
 
 class RegistrationRequestTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->faker = Factory::create();
-    }
-
     public function test_it_is_a_public_request(): void
     {
         $request = new RegistrationRequest();
