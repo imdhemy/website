@@ -40,9 +40,7 @@ class PostTest extends TestCase
 
     public function test_delete_post(): void
     {
-        $user = User::factory()->create();
-        $post = Post::factory()->create(['user_id' => $user->id]);
-
+        $post = Post::factory()->create();
         $response = $this->deleteJson("api/v1/posts/{$post->id}");
 
         $response->assertStatus(200);
