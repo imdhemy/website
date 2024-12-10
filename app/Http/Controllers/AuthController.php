@@ -28,7 +28,7 @@ class AuthController extends Controller
 
         $check=Auth::attempt(['email'=>$email,'password'=>$password]);
         if(!$check){
-            return response()->json(['message'=>'the password not correct'],);
+            return response()->json(['message'=>'the password not correct'],Response::HTTP_UNAUTHORIZED);
         }
 
         $user=User::where('email',$email)->first();
@@ -37,7 +37,7 @@ class AuthController extends Controller
         return response()->json([
             'user'=>$user,
             'token'=>$token,
-        ],200);
+        ],Response::HTTP_CREATED);
     }
 
 }
