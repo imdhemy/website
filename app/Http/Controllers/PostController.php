@@ -15,7 +15,7 @@ class PostController extends Controller
     {
         $user = User::find($request->user_id);
         if (!$user) {
-            return response()->json(['error' => 'User not found'], 404);
+            return response()->json(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
         }
         $post = Post::create([
             'title' => $request->getTitle(),
@@ -29,10 +29,10 @@ class PostController extends Controller
     {
         $post = Post::find($id);
         if (!$post) {
-            return response()->json(['error' => 'Post not found'], 404);
+            return response()->json(['error' => 'Post not found'], Response::HTTP_NOT_FOUND);
         }
         $post->delete();
-        return response()->json(['message' => 'Post deleted successfully'], 200);
+        return response()->json(['message' => 'Post deleted successfully'], Response::HTTP_OK);
     }
 
 
