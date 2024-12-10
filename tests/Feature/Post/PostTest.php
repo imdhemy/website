@@ -6,10 +6,11 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\Post;
 
 class PostTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use  RefreshDatabase,WithFaker;
     public function test_create_post(): void
     {
         $user = User::factory()->create();
@@ -36,4 +37,17 @@ class PostTest extends TestCase
             'user_id' => $user->id,
         ]);
     }
+
+    public function test_delete_post(): void
+    {
+        $user = User::factory()->create();
+        $post = Post::factory()->create(['user_id' => $user->id]);
+
+        $response = $this->deleteJson("api/v1/posts/{$post->id}");
+
+        $response->assertStatus(200);
+        $response->assertJson(['message' => 'Post deleted successfully']);
+        $this->assertDatabaseMissing('posts', ['id' => $post->id]);
+    }
+
 }

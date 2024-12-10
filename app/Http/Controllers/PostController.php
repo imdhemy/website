@@ -17,14 +17,23 @@ class PostController extends Controller
         if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
         }
-
         $post = Post::create([
             'title' => $request->getTitle(),
             'body' => $request->getBody(),
             'user_id' => $user->id,
         ]);
-
-
         return response()->json($post, Response::HTTP_CREATED);
     }
+
+    public function destroy($id): JsonResponse
+    {
+        $post = Post::find($id);
+        if (!$post) {
+            return response()->json(['error' => 'Post not found'], 404);
+        }
+        $post->delete();
+        return response()->json(['message' => 'Post deleted successfully'], 200);
+    }
+
+
 }
