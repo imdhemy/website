@@ -14,13 +14,16 @@ class PostTest extends TestCase
     public function test_create_post(): void
     {
         $user = User::factory()->create();
+        $token = $user->createToken($user->name . '-AuthToken')->plainTextToken;
         $data = [
             'title' => $this->faker->text(20),
             'body' => $this->faker->text(70),
             'user_id' => $user->id,
         ];
 
-        $response = $this->postJson('api/v1/posts', $data);
+        $response = $this->postJson('api/v1/posts', $data, [
+            'Authorization' => 'Bearer ' . $token,
+        ]);
 
         $response->assertStatus(201);
         $response->assertJsonStructure([
@@ -41,7 +44,12 @@ class PostTest extends TestCase
     public function test_delete_post(): void
     {
         $post = Post::factory()->create();
-        $response = $this->deleteJson("api/v1/posts/{$post->id}");
+        $user = $post->user;
+        $token = $user->createToken($user->name . '-AuthToken')->plainTextToken;
+
+        $response = $this->deleteJson("api/v1/posts/{$post->id}", [], [
+            'Authorization' => 'Bearer ' . $token,
+        ]);
 
         $response->assertStatus(200);
         $response->assertJson(['message' => 'Post deleted successfully']);
