@@ -29,7 +29,7 @@ class loginTest extends TestCase
             'password' => $password,
         ]);
 
-        $response->assertStatus(Response::HTTP_OK);
+        $response->assertStatus(Response::HTTP_CREATED);
         $response->assertJsonStructure(['user', 'token']);
         $response->assertJson(['user' => $user->toArray()]);
         $this->assertDatabaseHas('users', ['email' => $email]);
