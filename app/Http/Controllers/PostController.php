@@ -20,6 +20,6 @@ class PostController extends Controller
 
         return response()->json($post,Response::HTTP_OK);
 
-
    }
+
 }

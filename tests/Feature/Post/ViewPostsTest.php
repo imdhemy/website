@@ -23,7 +23,7 @@ class ViewPostsTest extends TestCase
       ]);
 }
 
-    public function test_show_one_posts(): void
+    public function test_show_one_post(): void
     {
         $post = Post::factory()->create();
 
