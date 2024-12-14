@@ -10,22 +10,29 @@ use Tests\TestCase;
 
 class UpdatePostTest extends TestCase
 {
-    use RefreshDatabase; use WithFaker;
+     use WithFaker;
 
     public function test_update_one_post(): void
     {
         $post = Post::factory()->create();
         $post_updated =[
-            'title'=> $this->faker()->sentence(),
-            'body'=> $this->faker()->paragraph(),
+            'title'=> 'updated title',
+            'body'=>  'updated body',
+//            'title'=> $this->faker()->sentence(),
+//            'body'=>  $this->faker()->paragraph(),
         ];
 
-        $response = $this->putJson("api/v1/update/post/$post->id", $post_updated);
+
+        $response = $this->putJson('api/v1/update/post/'. $post->id, $post_updated);
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonStructure(['id','title','body','user_id']);
         $response->assertJsonFragment(['id' => $post->id]);
-        $this->assertDatabaseHas('posts',['id' => $post->id] );
+        $this->assertDatabaseHas('posts',[
+            'id' => $post->id,
+            'title'=> 'updated title',
+            'body'=>  'updated body',
+        ] );
 
     }
 }

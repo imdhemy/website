@@ -17,15 +17,15 @@ class UpdatePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required,string,max:100'],
+            'title' => ['required','string','max:100'],
             'body' => ['required'],
         ];
     }
-    public function  get_title(): string
+    public function  getTitle(): string
     {
         return $this->input('title');
     }
-    public function  get_body(): string
+    public function  getBody(): string
     {
         return $this->input('body');
     }

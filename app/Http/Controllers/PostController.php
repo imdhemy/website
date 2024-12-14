@@ -26,6 +26,11 @@ class PostController extends Controller
     public function update(UpdatePostRequest $request,string $id){
         $post = Post::findOrFail($id);
 
+        $post->update([
+            'title' => $request->getTitle(),
+            'body'  => $request->getBody(),
+        ]);
+
         return response()->json($post,Response::HTTP_OK);
 
     }

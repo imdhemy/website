@@ -10,10 +10,10 @@ use Tests\TestCase;
 
 class ViewPostsTest extends TestCase
 {
-    use RefreshDatabase;
+
     public function test_index_all_posts(): void
     {
-        $posts = Post::factory(5)->create();
+        $posts = Post::factory(2)->create();
 
         $response = $this->getJson('api/v1/index/posts' );
 
