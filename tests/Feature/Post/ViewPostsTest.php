@@ -10,16 +10,16 @@ use Tests\TestCase;
 
 class ViewPostsTest extends TestCase
 {
+    use RefreshDatabase;
     public function test_index_all_posts(): void
     {
-        $posts = Post::factory()->create();
-        $posts= $posts->all();
+        $posts = Post::factory(5)->create();
 
-
-        $response = $this->getJson('api/v1/index/posts' ,$posts->toArray());
+        $response = $this->getJson('api/v1/index/posts' );
 
         $response->assertStatus(Response::HTTP_OK);
-        $response->assertJsonStructure(['id','title','body','user_id']);
-        $this->assertDatabaseHas('posts',$posts->toArray());
-    }
+        $response->assertJsonStructure([
+            '*'=>['id','title','body','user_id'],
+      ]);
+}
 }
