@@ -20,7 +20,7 @@ class UpdatePostTest extends TestCase
             'body'=> $this->faker()->paragraph(),
         ];
 
-        $response = $this->putJson("api/v1/update/posts/$post->id", $post_updated);
+        $response = $this->putJson("api/v1/update/post/$post->id", $post_updated);
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonStructure(['id','title','body','user_id']);
