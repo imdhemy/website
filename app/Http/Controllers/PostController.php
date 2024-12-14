@@ -14,4 +14,12 @@ class PostController extends Controller
 
        return response()->json($posts,Response::HTTP_OK);
    }
+   public function show(string $id)
+   {
+       $post = Post::findOrFail($id);
+
+        return response()->json($post,Response::HTTP_OK);
+
+
+   }
 }

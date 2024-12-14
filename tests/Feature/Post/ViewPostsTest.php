@@ -27,7 +27,7 @@ class ViewPostsTest extends TestCase
     {
         $post = Post::factory()->create();
 
-        $response = $this->getJson("api/v1/index/posts/$post->id");
+        $response = $this->getJson("api/v1/show/posts/$post->id");
 
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonStructure(['id','title','body','user_id']);
