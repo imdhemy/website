@@ -26,10 +26,13 @@ class AuthController extends Controller
         $email = $request->email();
         $password = $request->password();
 
-
         $check = Auth::attempt(['email' => $email, 'password' => $password]);
         if (!$check) {
-            return response()->json(['message' => 'the password not correct'], Response::HTTP_UNAUTHORIZED);
+            return response()->json([
+                'errors' => [
+                    'password' => ['Invalid password'],
+                ],
+            ], Response::HTTP_BAD_REQUEST);
         }
 
         $user = User::where('email', $email)->first();

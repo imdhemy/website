@@ -34,4 +34,22 @@ class loginTest extends TestCase
             'tokenable_id' => $user->id,
         ]);
     }
+
+    public function test_login_by_invalid_credentials(): void
+    {
+        $email = $this->faker()->email();
+        User::factory()->create(['email' => $email]);
+
+        $response = $this->postJson('/api/v1/auth/login', [
+            'email' => $email,
+            'password' => $this->faker()->password(8),
+        ]);
+
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
+        $response->assertJson([
+            'errors' => [
+                'password' => ['Invalid password'],
+            ],
+        ]);
+    }
 }
