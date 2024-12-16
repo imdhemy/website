@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegistrationRequest;
 use App\Models\User;
+use App\Service\Security\Authenticate;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
@@ -18,30 +16,16 @@ class AuthController extends Controller
             'password' => bcrypt($request->getPassword()),
         ]);
 
-        return response()->json($user, Response::HTTP_CREATED);
+        return $this->created($user);
     }
 
-    public function login(LoginRequest $request): JsonResponse
+    public function login(Authenticate $authenticate): JsonResponse
     {
-        $email = $request->email();
-        $password = $request->password();
+        $user = $authenticate->execute();
 
-        $check = Auth::attempt(['email' => $email, 'password' => $password]);
-        if (!$check) {
-            return response()->json([
-                'errors' => [
-                    'password' => ['Invalid password'],
-                ],
-            ], Response::HTTP_BAD_REQUEST);
-        }
-
-        $user = $request->user();
         $token = $user->createToken('__AUTH_TOKEN__')->plainTextToken;
 
-        return response()->json([
-            'user' => $user,
-            'token' => $token,
-        ], Response::HTTP_OK);
+        return $this->ok(['user' => $user, 'token' => $token]);
     }
 
 }
