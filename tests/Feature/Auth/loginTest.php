@@ -30,7 +30,7 @@ class loginTest extends TestCase
         $response->assertJsonStructure(['user', 'token']);
         $response->assertJson(['user' => $user->toArray()]);
         $this->assertDatabaseHas('personal_access_tokens', [
-            'name' => $user->name.'-AuthToken',
+            'name' => '__AUTH_TOKEN__',
             'tokenable_id' => $user->id,
         ]);
     }
