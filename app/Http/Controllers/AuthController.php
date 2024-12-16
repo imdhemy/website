@@ -35,7 +35,7 @@ class AuthController extends Controller
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        $user = User::where('email', $email)->first();
+        $user = $request->user();
         $token = $user->createToken($user->name.'-AuthToken')->plainTextToken;
 
         return response()->json([
