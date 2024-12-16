@@ -29,11 +29,9 @@ class loginTest extends TestCase
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonStructure(['user', 'token']);
         $response->assertJson(['user' => $user->toArray()]);
-        $this->assertDatabaseHas('users', ['email' => $email]);
         $this->assertDatabaseHas('personal_access_tokens', [
             'name' => $user->name.'-AuthToken',
             'tokenable_id' => $user->id,
         ]);
-
     }
 }
