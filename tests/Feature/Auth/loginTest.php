@@ -3,18 +3,15 @@
 namespace Tests\Feature\Auth;
 
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
 use Symfony\Component\HttpFoundation\Response;
-use App\Models\User;
 use Tests\TestCase;
 
 class loginTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
     use WithFaker;
+
     public function test_login_by_email(): void
     {
         $email = $this->faker()->email();
@@ -29,12 +26,12 @@ class loginTest extends TestCase
             'password' => $password,
         ]);
 
-        $response->assertStatus(Response::HTTP_CREATED);
+        $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonStructure(['user', 'token']);
         $response->assertJson(['user' => $user->toArray()]);
         $this->assertDatabaseHas('users', ['email' => $email]);
         $this->assertDatabaseHas('personal_access_tokens', [
-            'name' => $user->name . '-AuthToken',
+            'name' => $user->name.'-AuthToken',
             'tokenable_id' => $user->id,
         ]);
 

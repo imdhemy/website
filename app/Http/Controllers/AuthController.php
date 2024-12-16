@@ -20,24 +20,25 @@ class AuthController extends Controller
 
         return response()->json($user, Response::HTTP_CREATED);
     }
+
     public function login(LoginRequest $request): JsonResponse
     {
-        $email=$request->email();
-        $password=$request->password();
+        $email = $request->email();
+        $password = $request->password();
 
 
-        $check=Auth::attempt(['email'=>$email,'password'=>$password]);
-        if(!$check){
-            return response()->json(['message'=>'the password not correct'],Response::HTTP_UNAUTHORIZED);
+        $check = Auth::attempt(['email' => $email, 'password' => $password]);
+        if (!$check) {
+            return response()->json(['message' => 'the password not correct'], Response::HTTP_UNAUTHORIZED);
         }
 
-        $user=User::where('email',$email)->first();
+        $user = User::where('email', $email)->first();
         $token = $user->createToken($user->name.'-AuthToken')->plainTextToken;
 
         return response()->json([
-            'user'=>$user,
-            'token'=>$token,
-        ],Response::HTTP_CREATED);
+            'user' => $user,
+            'token' => $token,
+        ], Response::HTTP_OK);
     }
 
 }
