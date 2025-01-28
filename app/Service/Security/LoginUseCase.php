@@ -5,24 +5,26 @@ declare(strict_types=1);
 namespace App\Service\Security;
 
 use App\Http\Requests\LoginRequest;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
-final readonly class Authenticate
+final readonly class LoginUseCase
 {
     public function __construct(private LoginRequest $request)
     {
     }
 
-    public function execute(): User
+    public function execute(): AuthenticatedUser
     {
-        if (!Auth::attempt([
+        if (! Auth::attempt([
             'email' => $this->request->email(),
             'password' => $this->request->password(),
         ])) {
             throw new InvalidLoginAttemptException();
         }
 
-        return $this->request->user();
+        $user = $this->request->user();
+        $token = $user->createToken('__AUTH_TOKEN__');
+
+        return new AuthenticatedUser(user: $user, accessToken: $token);
     }
 }

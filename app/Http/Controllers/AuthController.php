@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RegistrationRequest;
 use App\Models\User;
-use App\Service\Security\Authenticate;
+use App\Service\Security\LoginUseCase;
 use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
@@ -19,13 +19,8 @@ class AuthController extends Controller
         return $this->created($user);
     }
 
-    public function login(Authenticate $authenticate): JsonResponse
+    public function login(LoginUseCase $useCase): JsonResponse
     {
-        $user = $authenticate->execute();
-
-        $token = $user->createToken('__AUTH_TOKEN__')->plainTextToken;
-
-        return $this->ok(['user' => $user, 'token' => $token]);
+        return $this->ok($useCase->execute());
     }
-
 }
